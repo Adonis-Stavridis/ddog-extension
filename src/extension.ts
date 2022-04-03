@@ -5,8 +5,8 @@ const API_TOKEN = 'c93h21aad3icjtmbvd70';
 
 const SYMBOL = 'DDOG';
 
-const UPDATE_TIME = 120;
-const ERROR_TIME = 30;
+const UPDATE_TIME = 300;
+const ERROR_TIME = 60;
 const ONE_SECOND = 1000;
 
 const UP_COLOR = 'mediumseagreen';
