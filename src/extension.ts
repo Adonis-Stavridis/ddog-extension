@@ -2,8 +2,12 @@ import * as vscode from 'vscode';
 import axios from 'axios';
 
 const API_TOKEN = 'c93h21aad3icjtmbvd70';
+
 const SYMBOL = 'DDOG';
-const TIMEOUT_TIME = 120; // 2 minutes
+
+const UPDATE_TIME = 120;
+const ERROR_TIME = 30;
+const ONE_SECOND = 1000;
 
 const UP_COLOR = 'mediumseagreen';
 const DOWN_COLOR = 'tomato';
@@ -29,8 +33,6 @@ const displayDDOG = (item: vscode.StatusBarItem, data: ResponseData) => {
   }${Math.abs(change).toFixed(2)}`;
 
   item.color = positive ? UP_COLOR : DOWN_COLOR;
-
-  item.show();
 };
 
 const getDDOG = (item: vscode.StatusBarItem) => {
@@ -42,11 +44,13 @@ const getDDOG = (item: vscode.StatusBarItem) => {
       }
     })
     .then(response => {
-      console.log(response);
       displayDDOG(item, response.data);
     })
-    .catch(error => {
-      console.log(error);
+    .catch(function (error) {
+      if (error.response && error.response.status === 429) {
+        // if API call limit reached
+        setTimeout(getDDOG, ERROR_TIME * ONE_SECOND);
+      }
     });
 };
 
@@ -55,7 +59,9 @@ export const activate = () => {
     vscode.StatusBarAlignment.Right
   );
   ddogItem.tooltip = `🚀 To the moon! 💎🙌`;
+  ddogItem.show();
 
   getDDOG(ddogItem);
-  setInterval(() => getDDOG(ddogItem), TIMEOUT_TIME * 1000);
+
+  setInterval(() => getDDOG(ddogItem), UPDATE_TIME * ONE_SECOND);
 };
