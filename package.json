@@ -1,7 +1,7 @@
 {
   "name": "ddog",
   "displayName": "$DDOG",
-  "description": "Track $DDOG",
+  "description": "View $DDOG inside VSCode",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.66.0"
